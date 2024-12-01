@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -42,6 +43,14 @@ func SumSlice(inOrder []int) (sum int) {
 	return sum
 }
 
+// ProductSlice returns the product of a slice
+func ProductSlice(inOrder []int) (sum int) {
+	for _, item := range inOrder {
+		sum *= item
+	}
+	return sum
+}
+
 // ReverseString returns a reversed string
 func ReverseString(word string) string {
 	var reversed string
@@ -51,12 +60,20 @@ func ReverseString(word string) string {
 	return reversed
 }
 
-func paniccheck(e error) {
+// Paniccheck panics on error
+func Paniccheck(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-func removeSpaces(input string) string {
+// RemoveSpaces removes all extra whitespace from a string
+func RemoveSpaces(input string) string {
 	return strings.Join(strings.Fields(input), " ")
+}
+
+// SortIntSlice sorts an intslice
+func sortIntSlice(input []int) []int {
+	sort.Ints(input)
+	return input
 }
