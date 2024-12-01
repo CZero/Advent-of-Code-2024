@@ -30,18 +30,6 @@ func getLists(input []string) (listA, listB []int) {
 	return listA, listB
 }
 
-func sumDistances(listA, listB []int) (distance int) {
-	for i := 0; i < len(listA); i++ {
-		switch {
-		case listA[i] > listB[i]:
-			distance += listA[i] - listB[i]
-		default:
-			distance += listB[i] - listA[i]
-		}
-	}
-	return distance
-}
-
 func sumSimiliarity(listA, listB []int) (sum int) {
 	for _, numA := range listA {
 		var count int
