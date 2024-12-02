@@ -63,8 +63,9 @@ func getReports(input []string) (reports []Report) {
 // checkReportvaluesUnsafeWithDampener generates dampened versions and looks for a safe version among those.
 // Kicker is: if we just find one safe solution we can return safe (false).
 func checkReportvaluesUnsafeWithDampener(report Report) bool {
-	var dampenedReports []Report
-	dampenedReports = append(dampenedReports, report) // Don't forget, without a dampener it can also be safe!
+	if !checkReportvaluesUnsafe(report) { // The original can also be safe
+		return false
+	}
 	for i := 0; i < len(report.values); i++ {
 		dampenedReport := Report{
 			crease: report.crease,
@@ -74,15 +75,11 @@ func checkReportvaluesUnsafeWithDampener(report Report) bool {
 				dampenedReport.values = append(dampenedReport.values, val)
 			}
 		}
-		// fmt.Println(dampenedReport)
-		dampenedReports = append(dampenedReports, dampenedReport)
-	}
-
-	for _, report := range dampenedReports {
-		if !checkReportvaluesUnsafe(report) {
-			return false // We need just one to be safe, so we can return directly
+		if !checkReportvaluesUnsafe(dampenedReport) {
+			return false
 		}
 	}
+
 	return true // We didn't run into any safe report
 }
 
