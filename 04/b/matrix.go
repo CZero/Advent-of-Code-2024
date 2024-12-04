@@ -55,37 +55,19 @@ func (m *Matrix) inmatrix(coord Coord) bool {
 	return ok
 }
 
-// wordSearch is a method to find the number of occurrences for a word.
+// wordSearch is a method to find the number of occurrences for a word in all directions, horizontal, vertical, diagonal
 func (m *Matrix) wordSearch(word string) (occurrences int) {
 	firstLetter := string(word[0])
+	directions := []string{"n", "ne", "e", "se", "s", "sw", "w", "nw"}
 	for j := 0; j < (*m).height; j++ {
 		for i := 0; i < (*m).width; i++ {
 			switch m.grid[Coord{i, j}] {
 			case firstLetter:
-				fmt.Printf("Found X: i %d, j %d\n", i, j)
-				if m.searchDirection("north", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("northeast", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("east", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("southeast", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("south", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("southwest", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("west", word, i, j) {
-					occurrences++
-				}
-				if m.searchDirection("northwest", word, i, j) {
-					occurrences++
+				// fmt.Printf("Found X: i %d, j %d\n", i, j)
+				for _, direction := range directions {
+					if m.searchDirection(direction, word, i, j) {
+						occurrences++
+					}
 				}
 			}
 		}
@@ -100,25 +82,25 @@ func (m *Matrix) xmasSearch() (occurrences int) {
 			if m.grid[Coord{i, j}] == "A" {
 				fmt.Printf("A found: i %d, j%d\n", i, j)
 				var legs int
-				if m.searchDirection("southeast", "MAS", i-1, j-1) {
+				if m.searchDirection("se", "MAS", i-1, j-1) {
 					legs++
 					if legs == 2 {
 						occurrences++
 					}
 				}
-				if m.searchDirection("northeast", "MAS", i-1, j+1) {
+				if m.searchDirection("ne", "MAS", i-1, j+1) {
 					legs++
 					if legs == 2 {
 						occurrences++
 					}
 				}
-				if m.searchDirection("southwest", "MAS", i+1, j-1) {
+				if m.searchDirection("sw", "MAS", i+1, j-1) {
 					legs++
 					if legs == 2 {
 						occurrences++
 					}
 				}
-				if m.searchDirection("northwest", "MAS", i+1, j+1) {
+				if m.searchDirection("nw", "MAS", i+1, j+1) {
 					legs++
 					if legs == 2 {
 						occurrences++
@@ -132,31 +114,30 @@ func (m *Matrix) xmasSearch() (occurrences int) {
 
 // searchDirection is a method that searches a "word" in a "direction", starting at i,j
 func (m *Matrix) searchDirection(direction, word string, i, j int) (found bool) {
-	// fmt.Println("north")
 	for _, letter := range word {
 		if !(*m).inmatrix(Coord{i, j}) {
 			return false
 		}
 		if (*m).grid[Coord{i, j}] == string(letter) { // If the letter is correct, prep for the next
 			switch direction {
-			case "north":
+			case "n":
 				j--
-			case "east":
+			case "e":
 				i++
-			case "south":
+			case "s":
 				j++
-			case "west":
+			case "w":
 				i--
-			case "northeast":
+			case "ne":
 				i++
 				j--
-			case "northwest":
+			case "nw":
 				i--
 				j--
-			case "southeast":
+			case "se":
 				i++
 				j++
-			case "southwest":
+			case "sw":
 				i--
 				j++
 			}
