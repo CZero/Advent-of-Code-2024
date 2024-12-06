@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Coord holds {Column, Row} (I always get confuzzled with x,y)
 type Coord struct {
@@ -63,18 +65,21 @@ func (m *StringsMatrix) BuildMatrix(input []string) {
 
 // FindLoopingSpots replaces all empty spaces with an object to see if we get a loop walking the guard. It adds the found spot to loopingspots
 func (m *StringsMatrix) FindLoopingSpots() {
-	for r := 0; r <= m.height; r++ {
-		for c := 0; c <= m.width; c++ {
-			switch m.grid[Coord{r, c}] {
-			case ".":
-				m.objects[Coord{r, c}] = true // We introduce an object
-				if m.WalkTheGuard() {
-					m.loopingSpots[Coord{r, c}] = true
-				}
-				delete(m.objects, Coord{r, c}) // And we remove it.
+	var possibleSpots []Coord
+	for coords, _ := range m.visited {
+		possibleSpots = append(possibleSpots, coords)
+	}
+	for _, coord := range possibleSpots {
+		switch m.grid[coord] {
+		case ".":
+			m.objects[coord] = true // We introduce an object
+			if m.WalkTheGuard() {
+				m.loopingSpots[coord] = true
 			}
+			delete(m.objects, coord) // And we remove it.
 		}
 	}
+
 }
 
 // printMatrix is a method to visually validate the matrix.
@@ -145,7 +150,7 @@ func (m *StringsMatrix) WalkTheGuard() (loop bool) {
 			if !m.LoopDetected(m.next, m.direction) {
 				m.visited[m.next] = append(m.visited[m.next], m.direction)
 			} else {
-				fmt.Println("Loop detected!")
+				// fmt.Println("Loop detected!")
 				return true
 			}
 			m.guard = m.next
