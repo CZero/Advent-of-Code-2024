@@ -93,10 +93,10 @@ func (m *StringsMatrix) PrintMatrix() {
 			}
 			line = line + (*m).grid[Coord{r, c}]
 		}
-		fmt.Printf("%s\n", line)
+		// fmt.Printf("%s\n", line)
 	}
-	fmt.Println()
-	fmt.Printf("Objects: %v\n", m.objects)
+	// fmt.Println()
+	// fmt.Printf("Objects: %v\n", m.objects)
 }
 
 // inMatrix is a method to validate if a point is in the matrix.
